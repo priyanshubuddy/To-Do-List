@@ -14,12 +14,17 @@ const options = {
 };
 app.set("view engine", "ejs");
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(express.static("public"));
 
 // mongoose.connect(mongoConnectionString, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.connect(
-  "mongodb+srv://priyanshubuddy:Buddy@9769@multiverse.yke2fh8.mongodb.net/todolist", {useNewUrlParser: true, useUnifiedTopology: true}
+  "mongodb+srv://priyanshubuddy:Buddy@9769@multiverse.yke2fh8.mongodb.net/todolist", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
   // options,
   // (error) => {
   //   // console.log("not connected");
@@ -69,7 +74,10 @@ app.get("/", async (req, res) => {
         });
         res.redirect("/");
       } else {
-        res.render("list", { listTitle: "Today", newListItems: foundItems });
+        res.render("list", {
+          listTitle: "Today",
+          newListItems: foundItems
+        });
       }
     })
 
@@ -83,7 +91,9 @@ app.get("/", async (req, res) => {
 app.get("/:customListName", function (req, res) {
   const customListName = _.capitalize(req.params.customListName);
 
-  List.findOne({ name: customListName }, function (err, foundList) {
+  List.findOne({
+    name: customListName
+  }, function (err, foundList) {
     if (!err) {
       if (!foundList) {
         //Create a new list
@@ -117,7 +127,9 @@ app.post("/", function (req, res) {
     item.save();
     res.redirect("/");
   } else {
-    List.findOne({ name: listName }, function (err, foundList) {
+    List.findOne({
+      name: listName
+    }, function (err, foundList) {
       foundList.items.push(item);
       foundList.save();
       res.redirect("/" + listName);
@@ -137,9 +149,15 @@ app.post("/delete", function (req, res) {
       }
     });
   } else {
-    List.findOneAndUpdate(
-      { name: listName },
-      { $pull: { items: { _id: checkedItemId } } },
+    List.findOneAndUpdate({
+        name: listName
+      }, {
+        $pull: {
+          items: {
+            _id: checkedItemId
+          }
+        }
+      },
       function (err, foundList) {
         if (!err) {
           res.redirect("/" + listName);
