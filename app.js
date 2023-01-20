@@ -52,12 +52,12 @@ const List = mongoose.model("List", listSchema);
 
 var today = new Date();
 var todayDate = today.toLocaleString("en-US", {
-  hour: "numeric",
-  minute: "numeric",
+  // hour: "numeric",
+  // minute: "numeric",
   weekday: "long",
   day: "numeric",
   month: "short",
-  // year: "numeric",
+  year: "numeric",
 });
 
 app.get("/", async (req, res) => {
