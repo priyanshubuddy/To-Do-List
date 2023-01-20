@@ -4,14 +4,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
-
+const { text } = require("body-parser");
 const app = express();
 
-const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  family: 4
-};
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({
@@ -24,13 +19,7 @@ mongoose.connect(
   "mongodb+srv://priyanshubuddy:Buddy@9769@multiverse.yke2fh8.mongodb.net/todolist", {
     useNewUrlParser: true,
     useUnifiedTopology: true
-  }
-  // options,
-  // (error) => {
-  //   // console.log("not connected");
-  //   console.log(error);
-  // }
-);
+  });
 
 const itemsSchema = {
   name: String,
@@ -59,6 +48,18 @@ const listSchema = {
 
 const List = mongoose.model("List", listSchema);
 
+/* ---------------------------- Weekday and Date ---------------------------- */
+
+var today = new Date();
+var todayDate = today.toLocaleString("en-US", {
+  hour: "numeric",
+  minute: "numeric",
+  weekday: "long",
+  day: "numeric",
+  month: "short",
+  // year: "numeric",
+});
+
 app.get("/", async (req, res) => {
 
   try {
@@ -75,12 +76,11 @@ app.get("/", async (req, res) => {
         res.redirect("/");
       } else {
         res.render("list", {
-          listTitle: "Today",
+          listTitle: todayDate,
           newListItems: foundItems
         });
       }
     })
-
 
   } catch (error) {
     console.log('error hai bc');
